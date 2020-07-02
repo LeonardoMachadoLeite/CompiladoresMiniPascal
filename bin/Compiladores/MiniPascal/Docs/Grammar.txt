@@ -1,0 +1,66 @@
+0. <program''> ::= <program> @Dump "#" .
+1. <program> ::= "program" "id" "(" <identifier_list> @ProgramArguments ")" ";" <declarations> <subprogram_declarations> <compound_statement> "." .
+2. <identifier_list> ::= "id" @CreateList <identifier_list'> .
+3. <identifier_list'> ::= @Echo .
+4. <identifier_list'> ::= "," "id" @InsertList <identifier_list'> .
+5. <declarations> ::= <declarations'> .
+6. <declarations'> ::= .
+7. <declarations'> ::= "var" <identifier_list> @VarIdList ":" <type> @VarDec ";" <declarations'> .
+8. <type> ::= <standard_type> .
+9. <type> ::= "array" "[" "num" @BeginRange ".." "num" @EndRange "]" "of" <standard_type> @ArrayDec .
+10. <standard_type> ::= "integer" @Integer .
+11. <standard_type> ::= "real" @Real .
+12. <subprogram_declarations> ::= <subprogram_declarations'> .
+13. <subprogram_declarations'> ::= .
+14. <subprogram_declarations'> ::= <subprogram_head> <declarations> <compound_statement> @RestoreEnv ";" <subprogram_declarations'> .
+16. <subprogram_head> ::= "procedure" "id" @ProcId <arguments> ";" .
+15. <subprogram_head> ::= "function" "id" @FuncId <arguments> ":" <standard_type> @FuncType ";" .
+17. <arguments> ::= .
+18. <arguments> ::= "(" <parameter_list> ")" .
+19. <parameter_list> ::= "id" @CreateList <identifier_list'> @Teste ":" <type> @ListDec <parameter_list'> .
+20. <parameter_list'> ::= .
+21. <parameter_list'> ::= ";" <identifier_list> @Teste ":" <type> @ListDec <parameter_list'> .
+22. <compound_statement> ::= @Begin "begin" <optional_statements> @End "end" .
+23. <optional_statements> ::= .
+24. <optional_statements> ::= <statement_list> .
+25. <statement_list> ::= <statement> <statement_list'> .
+26. <statement> ::= <variable> @LValue ":=" <expression> @Assign .
+27. <statement> ::= <procedure_statement> .
+28. <statement> ::= @Begin "begin" <optional_statements> @End "end" .
+29. <statement> ::= "if" <expression> "then" <statement> "else" <statement> .
+30. <statement> ::= "while" <expression> "do" <statement> .
+32. <variable> ::= "idfunc" .
+31. <variable> ::= "idvar" @SimpleVar <variable'> .
+33. <variable'> ::= @Echo .
+34. <variable'> ::= "[" <expression> @Skip "]" @ArrayVar .
+35. <expression> ::= <simple_expression> <expression'> .
+36. <simple_expression> ::= <term> <simple_expression'> .
+37. <simple_expression> ::= <sign> <term> <simple_expression'> .
+38. <term> ::= <factor> <term'> .
+39. <factor> ::= "idvar" @Variable <factor'> .
+40. <factor> ::= "idfunc" @IdFuncCall "(" <expression_list> @ActualParameters ")" @FunctionCall .
+41. <factor> ::= "num" @Number .
+42. <factor> ::= "(" <expression> @Skip ")" @DoNothing .
+43. <factor> ::= "not" <factor> @Not .
+44. <factor'> ::= @Echo .
+45. <factor'> ::= "[" <expression> @Skip "]" @ArrayVar .
+46. <expression_list> ::= <term> <simple_expression'> <expression'> <expression_list'> .
+47. <expression_list> ::= <sign> <term> <simple_expression'> <expression'> <expression_list'> .
+48. <simple_expression'> ::= @Echo .
+
+49. <simple_expression'> ::= "addop" @Operator <term> @AddOp <simple_expression'> .
+
+50. <expression'> ::= @Echo .
+51. <expression'> ::= "relop" <simple_expression> .
+52. <expression_list'> ::= .
+53. <expression_list'> ::= "," <expression> <expression_list'> .
+54. <sign> ::= "addop" .
+55. <term'> ::= @Echo .
+
+56. <term'> ::= "mulop" @Operator <factor> @MulOp <term'> .
+
+57. <procedure_statement> ::= "idproc" <procedure_statement'> .
+58. <procedure_statement'> ::= .
+59. <procedure_statement'> ::= "(" <expression_list> ")" .
+60. <statement_list'> ::= .
+61. <statement_list'> ::= ";" <statement> <statement_list'> .
